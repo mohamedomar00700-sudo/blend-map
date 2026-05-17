@@ -24,10 +24,12 @@ import {
 export function Report({
   lang,
   answers,
+  participantName,
   onRestart,
 }: {
   lang: Lang;
   answers: Answers;
+  participantName: string;
   onRestart: () => void;
 }) {
   const tt = t[lang];
@@ -54,34 +56,60 @@ export function Report({
     if (!reportRef.current) return;
     setDownloading(true);
     try {
-      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas"),
         import("jspdf"),
       ]);
       const node = reportRef.current;
+      
+      // Ensure webfonts (Cairo for Arabic) are loaded before capture
+      if (document.fonts && typeof (document as any).fonts.ready !== "undefined") {
+        await (document as any).fonts.ready;
+      }
+      
+      // Temporarily set white background for accurate PDF capture
+      const prevBg = node.style.backgroundColor;
+      node.style.backgroundColor = "#ffffff";
+
       const canvas = await html2canvas(node, {
-        scale: 2,
+        scale: Math.max(window.devicePixelRatio || 1, 2),
         backgroundColor: "#ffffff",
         useCORS: true,
-        windowWidth: node.scrollWidth,
+        windowWidth: Math.max(document.documentElement.scrollWidth, node.scrollWidth),
+        windowHeight: Math.max(document.documentElement.scrollHeight, node.scrollHeight),
+        scrollY: -window.scrollY,
       });
+
+      // Restore background
+      node.style.backgroundColor = prevBg || "";
+
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pageWidth;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
+
       let position = 0;
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      let heightLeft = imgHeight - pageHeight;
       while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
+        position = position - pageHeight;
         pdf.addPage();
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
-      pdf.save(`behavioral-report-${Date.now()}.pdf`);
+      const fileName = participantName 
+        ? `behavioral-report-${participantName.replace(/\s+/g, '-')}-${Date.now()}.pdf`
+        : `behavioral-report-${Date.now()}.pdf`;
+      pdf.save(fileName);
+    } catch (err) {
+      console.error("PDF export failed", err);
+      alert(
+        lang === "ar"
+          ? "فشل تنزيل الملف. حاول مرة أخرى أو تواصل مع المطور."
+          : "PDF export failed. Please try again or contact support."
+      );
     } finally {
       setDownloading(false);
     }
@@ -130,6 +158,11 @@ export function Report({
             <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
               {tt.yourReport}
             </h1>
+            {participantName && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                {lang === "en" ? "For: " : "لـ: "}<span className="font-semibold text-foreground">{participantName}</span>
+              </p>
+            )}
             <p className="mt-1 text-sm text-muted-foreground">{tt.company}</p>
           </div>
           <img src={logoUrl} alt="United Pharmacy" className="h-14 w-14 rounded-md object-contain" />

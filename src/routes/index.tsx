@@ -17,6 +17,7 @@ function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [stage, setStage] = useState<Stage>("intro");
   const [answers, setAnswers] = useState<Answers>({});
+  const [participantName, setParticipantName] = useState("");
 
   useEffect(() => {
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
@@ -51,7 +52,7 @@ function Index() {
 
       <main className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
         {stage === "intro" && (
-          <Intro lang={lang} onBegin={() => setStage("assessment")} />
+          <Intro lang={lang} onBegin={() => setStage("assessment")} participantName={participantName} setParticipantName={setParticipantName} />
         )}
         {stage === "assessment" && (
           <QuestionForm
@@ -66,8 +67,10 @@ function Index() {
           <Report
             lang={lang}
             answers={answers}
+            participantName={participantName}
             onRestart={() => {
               setAnswers({});
+              setParticipantName("");
               setStage("intro");
             }}
           />

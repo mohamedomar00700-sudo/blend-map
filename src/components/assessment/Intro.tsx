@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Clock, FileCheck, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";
 import { t, type Lang, PROFILE_META, PROFILE_ORDER } from "@/lib/assessment";
 
-export function Intro({ lang, onBegin }: { lang: Lang; onBegin: () => void }) {
+export function Intro({ lang, onBegin, participantName, setParticipantName }: { lang: Lang; onBegin: () => void; participantName: string; setParticipantName: (name: string) => void }) {
   const tt = t[lang];
   return (
     <motion.div
@@ -43,20 +43,17 @@ export function Intro({ lang, onBegin }: { lang: Lang; onBegin: () => void }) {
         </ul>
       </div>
 
-      <div className="mt-6 grid gap-2 sm:grid-cols-4">
-        {PROFILE_ORDER.map((p) => {
-          const m = PROFILE_META[p][lang];
-          return (
-            <div
-              key={p}
-              className="rounded-lg border border-border bg-card px-4 py-3"
-              style={{ borderTopWidth: 3, borderTopColor: PROFILE_META[p].color }}
-            >
-              <div className="text-sm font-semibold text-foreground">{m.name}</div>
-              <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{m.tagline}</div>
-            </div>
-          );
-        })}
+      <div className="mt-8 rounded-lg border border-border bg-card p-5">
+        <label className="block text-sm font-semibold text-foreground">
+          {lang === "en" ? "Your Name (Optional)" : "اسمك (اختياري)"}
+        </label>
+        <input
+          type="text"
+          value={participantName}
+          onChange={(e) => setParticipantName(e.target.value)}
+          placeholder={lang === "en" ? "Enter your name" : "أدخل اسمك"}
+          className="mt-3 w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-[color:var(--brand-accent)]"
+        />
       </div>
 
       <div className="mt-8 rounded-lg border border-dashed border-border bg-muted/40 p-4 text-xs leading-relaxed text-muted-foreground">
