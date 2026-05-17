@@ -31,6 +31,44 @@ export const QUESTIONS: Question[] = [
   { id: 20, profile: "integrator", en: "I naturally support and encourage people around me.",                         ar: "أدعم وأُشجِّع من حولي بشكل تلقائي." },
 ];
 
+/**
+ * Question mapping: 5 questions per profile for balanced assessment.
+ * Each profile has dedicated questions targeting distinct behavioral traits.
+ */
+export const QUESTION_MAP: Record<ProfileKey, number[]> = {
+  pioneer: [1, 5, 9, 13, 17],
+  driver: [2, 6, 10, 14, 18],
+  guardian: [3, 7, 11, 15, 19],
+  integrator: [4, 8, 12, 16, 20],
+};
+
+/**
+ * Question rationale: explains the behavioral intent behind each question.
+ * Used for validation, documentation, and interpretation.
+ */
+export const QUESTION_RATIONALE: Record<number, string> = {
+  1: "Pioneer — Tests comfort with experimentation and ambiguity in outcomes",
+  2: "Driver — Measures decisiveness and preference for speed over analysis",
+  3: "Guardian — Assesses need for clarity, process documentation, and structure",
+  4: "Integrator — Evaluates attentiveness to team harmony and relationships",
+  5: "Pioneer — Gauges energy from innovation and collaborative ideation",
+  6: "Driver — Captures impatience signals in lengthy discussion scenarios",
+  7: "Guardian — Reflects preference for detailed planning and risk mitigation",
+  8: "Integrator — Measures empathy and consideration of emotional impact",
+  9: "Pioneer — Tests adaptability and enthusiasm for workplace change",
+  10: "Driver — Checks focus on measurable, concrete outcomes and KPIs",
+  11: "Guardian — Validates appreciation for consistency, reliability, standards",
+  12: "Integrator — Evaluates active role in maintaining team collaboration",
+  13: "Pioneer — Tests exploratory mindset versus comfort with routine",
+  14: "Driver — Measures confidence and assertiveness in pressure situations",
+  15: "Guardian — Reflects prioritization of quality and precision over speed",
+  16: "Integrator — Assesses proactive inclusion and consideration in discussions",
+  17: "Pioneer — Captures boredom signals from repetitive work patterns",
+  18: "Driver — Tests preference for direct, efficient communication",
+  19: "Guardian — Measures attention to detail, risk perception, oversight capability",
+  20: "Integrator — Gauges natural supportive and encouraging behaviors",
+};
+
 export const LIKERT = [
   { value: 5, en: "Strongly Agree",    ar: "أوافق بشدة" },
   { value: 4, en: "Agree",             ar: "أوافق" },
