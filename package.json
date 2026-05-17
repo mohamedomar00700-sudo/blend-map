@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:pages": "node scripts/build-pages.mjs",
+    "postbuild:pages": "node scripts/postbuild-pages.mjs",
+    "deploy:gh-pages": "npm run build:pages && npx --yes gh-pages@6 -d dist/client -m \"deploy static site\"",
+    "deploy:docs": "node scripts/build-pages.mjs && node scripts/copy-to-docs.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
