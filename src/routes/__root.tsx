@@ -76,9 +76,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Internal Learning & Development behavioral awareness tool inspired by Business Chemistry principles." },
       { name: "author", content: "United Pharmacy L&D" },
       { property: "og:title", content: "Behavioral Awareness Assessment — United Pharmacy" },
-      { property: "og:description", content: "Internal Learning & Development behavioral awareness tool." },
+      { property: "og:description", content: "Internal Learning & Development behavioral awareness tool inspired by Business Chemistry principles." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Behavioral Awareness Assessment — United Pharmacy" },
+      { name: "twitter:description", content: "Internal Learning & Development behavioral awareness tool inspired by Business Chemistry principles." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e8f603df-9ae4-4769-831e-a5f0f38a8a05/id-preview-1f55ff32--2f09652d-5b3a-4311-85ae-239ca3182301.lovable.app-1779002498541.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e8f603df-9ae4-4769-831e-a5f0f38a8a05/id-preview-1f55ff32--2f09652d-5b3a-4311-85ae-239ca3182301.lovable.app-1779002498541.png" },
     ],
     links: [
       {
