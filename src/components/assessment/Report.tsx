@@ -56,7 +56,7 @@ export function Report({
     if (!reportRef.current) return;
     setDownloading(true);
     try {
-      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+      const [{ default: html2canvasPro }, { jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
         import("jspdf"),
       ]);
@@ -71,7 +71,7 @@ export function Report({
       const prevBg = node.style.backgroundColor;
       node.style.backgroundColor = "#ffffff";
 
-      const canvas = await html2canvas(node, {
+      const canvas = await html2canvasPro(node, {
         scale: Math.max(window.devicePixelRatio || 1, 2),
         backgroundColor: "#ffffff",
         useCORS: true,
